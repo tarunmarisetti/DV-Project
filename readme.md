@@ -1,56 +1,73 @@
-# Number of people using the Internet - Data package
+# Scatter Plot Visualization with Animated Transitions
 
-This data package contains the data that powers the chart ["Number of people using the Internet"](https://ourworldindata.org/grapher/number-of-internet-users?v=1&csvType=full&useColumnShortNames=false) on the Our World in Data website. It was downloaded on November 22, 2024.
+This project is a data visualization web app that generates a scatter plot to visualize relationships between different planetary attributes, such as distance from Earth, planetary radius, temperature, and discovery year. The scatter plot allows users to interactively change axes and attributes, and smoothly animates data transitions to provide an engaging user experience.
 
-## CSV Structure
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Setup Instructions](#setup-instructions)
+- [Usage](#usage)
+- [Customization](#customization)
+- [Credits](#credits)
 
-The high level structure of the CSV file is that each row is an observation for an entity (usually a country or region) and a timepoint (usually a year).
+## Overview
+The scatter plot visualization project helps users understand the relationship between planetary features by displaying interactive points on a chart. The data points move smoothly when the user selects different attributes for the axes or changes the coloring scheme, making the transitions easy to track visually.
 
-The first two columns in the CSV file are "Entity" and "Code". "Entity" is the name of the entity (e.g. "United States"). "Code" is the OWID internal entity code that we use if the entity is a country or region. For normal countries, this is the same as the [iso alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) code of the entity (e.g. "USA") - for non-standard countries like historical countries these are custom codes.
+The main features include:
+- Smooth transitions of data points when changing attributes.
+- Interactive tooltips showing detailed information about each data point.
+- Dynamic color coding based on various attributes, such as discovery year or temperature.
+- An informative legend, positioned at the top right, that describes the color scale used.
 
-The third column is either "Year" or "Day". If the data is annual, this is "Year" and contains only the year as an integer. If the column is "Day", the column contains a date string in the form "YYYY-MM-DD".
+## Features
+- **Dynamic Scatter Plot**: Displays a scatter plot with configurable x and y axes, which users can change dynamically.
+- **Smooth Transitions**: Data points smoothly transition from old to new positions whenever the selected attributes are changed.
+- **Color-Coded Points**: Points are color-coded based on a selected attribute, with continuous attributes like temperature displayed using a gradient.
+- **Interactive Tooltips**: When hovering over a data point, a tooltip displays relevant information like planet name, temperature, distance from Earth, and discovery method.
+- **Legend for Color Attributes**: A color legend, positioned at the top right of the chart, describes the attribute used for color coding.
 
-The final column is the data column, which is the time series that powers the chart. If the CSV data is downloaded using the "full data" option, then the column corresponds to the time series below. If the CSV data is downloaded using the "only selected data visible in the chart" option then the data column is transformed depending on the chart type and thus the association with the time series might not be as straightforward.
+## Technologies Used
+- **D3.js**: For rendering and animating the scatter plot, as well as handling the transitions and interactions.
+- **JavaScript**: The core language for the logic and interaction on the page.
+- **HTML/CSS**: For structuring and styling the webpage.
 
-## Metadata.json structure
+## Setup Instructions
+To run this project locally, follow these steps:
 
-The .metadata.json file contains metadata about the data package. The "charts" key contains information to recreate the chart, like the title, subtitle etc.. The "columns" key contains information about each of the columns in the csv, like the unit, timespan covered, citation for the data etc..
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd scatter-plot-visualization
+   ```
 
-## About the data
+2. **Install Dependencies**:
+   Ensure you have a local server setup (e.g., use VS Code's Live Server extension or Python's SimpleHTTPServer).
 
-Our World in Data is almost never the original producer of the data - almost all of the data we use has been compiled by others. If you want to re-use data, it is your responsibility to ensure that you adhere to the sources' license and to credit them correctly. Please note that a single time series may have more than one source - e.g. when we stich together data from different time periods by different producers or when we calculate per capita metrics using population data from a second source.
+3. **Run the Project**:
+   Start a local server in the project directory to view the scatter plot in a web browser.
+   ```bash
+   # For Python 3
+   python -m http.server
+   ```
+   Then open your browser at `http://localhost:8000`.
 
-## Detailed information about the data
+## Usage
+- **Select Attributes**: Use the dropdown menus provided to select the x-axis and y-axis attributes.
+- **Interactive Points**: Hover over the points to see detailed information about the corresponding planet.
+- **Change Coloring Scheme**: Select a different attribute for coloring the points to explore relationships.
 
+### Notes
+- **Legend Positioning**: The legend is rendered at the top right of the chart for clear reference to the attribute used for color.
+- **Axis Transition**: When you change an attribute, the points on the chart will move from their old positions to the new ones smoothly to enhance visualization continuity.
 
-## Number of Internet users
-The number of internet users is calculated by Our World in Data based on internet access figures as a share of the total population, published in the World Bank, World Development Indicators and total population figures from the UN World Population Prospects, Gapminder and HYDE.
+## Customization
+You can easily customize the scatter plot visualization to adapt it to your dataset or adjust the styling:
+- **Data Source**: Replace the dataset in the JavaScript code to visualize different data.
+- **Attributes**: Modify `xAttribute`, `yAttribute`, and `colorAttribute` dropdowns to work with different fields of your data.
+- **Styling**: Update the CSS to change the appearance of the scatter plot, tooltips, and other elements.
 
-Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc.
+## Credits
+- **D3.js**: A powerful library for creating interactive visualizations.
+- **OpenAI Assistance**: Guidance and suggestions provided to develop interactive features and enhance visualization.
 
-Limitations and exceptions: Operators have traditionally been the main source of telecommunications data, so information on subscriptions has been widely available for most countries. This gives a general idea of access, but a more precise measure is the penetration rate - the share of households with access to telecommunications. During the past few years more information on information and communication technology use has become available from household and business surveys. Also important are data on actual use of telecommunications services. Ideally, statistics on telecommunications (and other information and communications technologies) should be compiled for all three measures: subscriptions, access, and use. The quality of data varies among reporting countries as a result of differences in regulations covering data provision and availability.
-
-Discrepancies may also arise in cases where the end of a fiscal year differs from that used by ITU, which is the end of December of every year. A number of countries have fiscal years that end in March or June of every year.
-
-Statistical concept and methodology: The Internet is a world-wide public computer network. It provides access to a number of communication services including the World Wide Web and carries email, news, entertainment and data files, irrespective of the device used (not assumed to be only via a computer - it may also be by mobile phone, PDA, games machine, digital TV etc.). Access can be via a fixed or mobile network. For additional/latest information on sources and country notes, please also refer to: https://www.itu.int/en/ITU-D/Statistics/Pages/stat/default.aspx
-Date range: 1990–2020  
-Unit: users  
-
-
-### How to cite this data
-
-#### In-line citation
-If you have limited space (e.g. in data visualizations), you can use this abbreviated in-line citation:  
-International Telecommunication Union (via World Bank); Gapminder (2019); UN (2022); HYDE (2017); Gapminder (Systema Globalis) – processed by Our World in Data
-
-#### Full citation
-International Telecommunication Union (via World Bank); Gapminder (2019); UN (2022); HYDE (2017); Gapminder (Systema Globalis) – processed by Our World in Data. “Number of Internet users” [dataset]. International Telecommunication Union (via World Bank); Gapminder (2019); UN (2022); HYDE (2017); Gapminder (Systema Globalis) [original data].
-Source: International Telecommunication Union (via World Bank); Gapminder (2019); UN (2022); HYDE (2017); Gapminder (Systema Globalis) – processed by Our World In Data
-
-### What you should know about this data
-
-### Additional information about this data
-Key user statistics related to Internet (e.g. number of individuals using the Internet).
-
-
-    
