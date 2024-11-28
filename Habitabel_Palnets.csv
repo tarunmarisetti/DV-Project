@@ -1,0 +1,43 @@
+,Name,Type,Detection Method,Mass,Radius,Flux,Tsurf,Period,Distance,Age,ESI
+,,,,(ME),(RE),(SE),(K),(days),(ly),(Gy),
+1,Kepler-62 e,K Warm Superterran,Transit,< 36.0,1.61,1.15,~ 297,122,981,7,0.83
+2,Kepler-452 b,G Warm Superterran,Transit,~ 3.29,1.63,1.11,~ 295,384,1799,6,0.83
+3,Wolf 1061 c,M Warm Superterran,Radial Velocity,? 3.41,~ 1.66,1.3,~ 306,17.9,14,,0.8
+4,Kepler-1410 b,K Warm Superterran,Transit,~ 3.82,1.78,1.07,~ 292,60.9,1196,4.07,0.8
+5,GJ 667 C c,M Warm Superterran,Radial Velocity,? 3.80,~ 1.77,0.88,~ 278,28.1,23.6,> 2.00,0.8
+6,Kepler-1544 b,K Warm Superterran,Transit,~ 3.82,1.78,0.84,~ 275,168,1092,2.34,0.79
+7,Kepler-283 c,K Warm Superterran,Transit,~ 3.97,1.82,0.89,~ 279,92.7,1526,3.09,0.79
+8,Ross 508 b,M Warm Superterran,Radial Velocity,? 4.00,~ 1.83,1.32,~ 301,10.8,36.6,,0.77
+9,Kepler-1638 b,G Warm Superterran,Transit,~ 4.16,1.87,1.39,~ 312,259,4975,4.37,0.76
+10,Kepler-440 b,K Warm Superterran,Transit,~ 4.12,1.86,1.44,~ 307,101,981,1.3,0.75
+11,GJ 433 d,M Warm Superterran,Radial Velocity,? 5.22,~ 2.14,1.06,~ 291,36.1,29.6,,0.74
+12,Kepler-1653 b,K Warm Superterran,Transit,~ 5.35,2.17,1.04,~ 290,140,2462,7.7,0.74
+13,Kepler-705 b,M Warm Superterran,Transit,~ 5.10,2.11,0.77,~ 269,56.1,903,3.89,0.73
+14,K2-332 b,M Warm Superterran,Transit,~ 5.48,2.2,1.17,~ 298,17.7,401,,0.73
+15,Kepler-155 c,M Warm Superterran,Transit,~ 5.65,2.24,1.05,~ 291,52.7,957,2.9,0.73
+16,Kepler-22 b,G Warm Superterran,Transit,< 9.10,2.1,1.41,~ 275,289,634,7,0.72
+17,TOI-2257 b,M Warm Superterran,Transit,~ 5.45,2.19,0.74,~ 253,35.2,188,,0.72
+18,Kepler-443 b,K Warm Superterran,Transit,~ 6.04,2.33,0.89,~ 278,177,2616,3.2,0.71
+19,GJ 367 d,M Warm Superterran,Radial Velocity,? 6.03,~ 2.33,1.15,~ 296,34.4,30.7,,0.71
+20,Kepler-1701 b,K Warm Superterran,Transit,~ 5.57,2.22,1.42,~ 313,169,1905,,0.71
+21,K2-18 b,M Warm Superterran,Transit,8.92,2.37,1.26,~ 302,32.9,124,,0.7
+22,Kepler-1606 b,G Warm Superterran,Transit,~ 4.94,2.07,1.64,~ 325,196,2711,4.27,0.7
+23,K2-9 b,M Warm Superterran,Transit,~ 5.69,2.25,1.45,~ 315,18.4,270,> 1.00,0.7
+24,GJ 180 c,M Warm Superterran,Radial Velocity,? 6.40,~ 2.41,0.78,~ 270,24.3,38.9,,0.7
+25,GJ 163 c,M Warm Superterran,Radial Velocity,? 6.80,~ 2.50,1.25,~ 303,25.6,49.3,6,0.69
+26,Kepler-1540 b,K Warm Superterran,Transit,~ 6.76,2.49,0.78,~ 270,125,798,2.51,0.69
+27,Kepler-174 d,K Warm Superterran,Transit,~ 5.43,2.19,0.59,~ 251,247,1254,4.9,0.68
+28,HD 40307 g,K Warm Superterran,Radial Velocity,? 7.10,~ 2.56,0.67,~ 255,197,42.2,4.5,0.66
+29,TOI-904 c,M Warm Superterran,Transit,~ 5.34,2.17,0.52,~ 244,84,150,1.5,0.66
+30,Kepler-296 f,M Warm Superterran,Transit,~ 3.89,1.8,0.44,~ 229,63.3,544,4.2,0.66
+31,LHS 1140 b,M Warm Superterran,Transit,5.6,1.73,0.43,~ 232,24.7,48.9,> 5.00,0.66
+32,HIP 38594 b,M Warm Superterran,Radial Velocity,? 8.10,~ 2.77,1.34,~ 307,60.7,58,,0.65
+33,HN Lib b,M Warm Superterran,Radial Velocity,? 5.46,~ 2.20,0.51,~ 242,36.1,20.4,4.4,0.65
+34,K2-288 B b,M Warm Superterran,Transit,~ 4.27,1.9,0.44,~ 233,31.4,214,> 1.00,0.65
+35,HD 216520 c,K Warm Superterran,Radial Velocity,? 9.44,~ 3.03,1.28,~ 304,154,63.8,6,0.63
+36,GJ 3293 d,M Warm Superterran,Radial Velocity,? 7.60,~ 2.67,0.59,~ 251,48.1,65.9,,0.63
+37,GJ 357 d,M Warm Superterran,Radial Velocity,? 6.10,~ 2.34,0.38,~ 226,55.7,30.8,,0.58
+38,GJ 682 b,M Warm Superterran,Radial Velocity,? 4.40,~ 1.93,0.31,~ 215,17.5,16.3,,0.57
+39,GJ 229 A c,M Warm Superterran,Radial Velocity,? 8.58,~ 2.87,0.44,~ 227,121,18.8,< 0.40,0.56
+40,GJ 514 b,M Warm Superterran,Radial Velocity,? 5.20,~ 2.13,0.27,~ 198,140,24.8,> 0.80,0.52
+41,GJ 180 d,M Warm Superterran,Radial Velocity,? 7.56,~ 2.66,0.26,~ 204,106,38.9,,0.48

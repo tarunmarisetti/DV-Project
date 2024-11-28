@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exoplanet Comparison Scatter Plot</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <h3 class="text-center">Exoplanet Comparison with Earth and Jupiter</h3>
+    <hr>
+        <!-- Dropdown for Reference Planet -->
+    <div class="dropdown-container">
+        <label for="reference">Reference Planet:</label>
+        <select id="reference">
+            <option value="Earth">Earth</option>
+            <option value="Jupiter">Jupiter</option>
+        </select>
+        
+        <!-- Dropdown for Comparison Attribute -->
+        <!-- <label for="x-axis">X-axis:</label>
+        <select id="x-axis"></select> -->
+        
+        <label for="y-axis">Y-axis:</label>
+        <select id="y-axis"></select>
+        
+        <label for="color">Color by:</label>
+        <select id="color"></select>
+    </div>
+    <!-- Scatter Plot SVG -->
+    <div class="chart" id="chart"></div>
+    <div class="tooltip" id="tooltip" style="opacity: 0;"></div>      
+</body>
+</html>
