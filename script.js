@@ -4,8 +4,10 @@ let data;
 const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 d3.csv("Updated_Exoplanet_Dataset_with_Adjusted_pl_bmassj.csv").then(data => {
 
+    const reference = d3.select("#reference").property("value");
     const xAttribute = "sy_dist"; // Hardcode the X-axis attribute
     const yAttribute = d3.select("#y-axis").property("value");
+    console.log("yAttribute",d3.select("#y-axis").property("value"));
 
     // Define default configurations and variables
     const sampleSize = 100;
@@ -32,7 +34,7 @@ d3.csv("Updated_Exoplanet_Dataset_with_Adjusted_pl_bmassj.csv").then(data => {
         })
         .slice(0, sampleSize); // Limit the final dataset to the sample size
 
-    console.log(sampledData)
+    // console.log(sampledData)
     const earthAttributes = {
         x: {
             "Distance from Earth (parsecs)": "sy_dist"
@@ -77,7 +79,7 @@ d3.csv("Updated_Exoplanet_Dataset_with_Adjusted_pl_bmassj.csv").then(data => {
 
         updateAxisDropdown("#y-axis", selectedAttributes.y);
         updateAxisDropdown("#color", selectedAttributes.color);
-        console.log(selectedAttributes);
+        // console.log(selectedAttributes);
 
         drawChart();
     }
@@ -103,7 +105,24 @@ function removeOutliers(data, attribute) {
         return value >= lowerBound && value <= upperBound; // Keep values within bounds
     });
 }
-let isInitialRender = true;
+function getYAttributeLabel(yAttribute) {
+    // Search in earthAttributes.y and jupiterAttributes.y
+    for (const [label, value] of Object.entries(earthAttributes.y)) {
+        if (value === yAttribute) {
+            return label;
+        }
+    }
+    for (const [label, value] of Object.entries(jupiterAttributes.y)) {
+        if (value === yAttribute) {
+            return label;
+        }
+    }
+    // Fallback if no match is found
+    return yAttribute;
+}
+
+let previousXAttribute = reference;
+let previousYAttribute = yAttribute; // Initialize previous attribute to track changes
 
 // Draw chart based on current dropdown selections
 function drawChart() {
@@ -112,6 +131,7 @@ function drawChart() {
     const xAttribute = "sy_dist"; // Hardcode the X-axis attribute
     const yAttribute = d3.select("#y-axis").property("value");
     const colorAttribute = d3.select("#color").property("value");
+    console.log("yAttribute",yAttribute);
 
     // Increase width and height for a larger plot area
     // Set up dimensions and margins
@@ -148,7 +168,8 @@ function drawChart() {
     if (!isContinuous) {
         console.log("Unique values for ordinal scale:", [...new Set(sampledData.map(d => d[colorAttribute]))]);
     }
-
+    // Define padding for scales
+    const paddingFactor = 0.05; // 5% padding
     
      // Filter out non-positive values for log scale attributes
      const isLogScale = ["pl_rade", "pl_bmasse", "pl_radj", "pl_bmassj"].includes(yAttribute);
@@ -156,20 +177,23 @@ function drawChart() {
      // Remove outliers from the data for the selected y-axis attribute
      const filteredData = removeOutliers(sampledData, yAttribute);
 
-    const xMin = Math.max(1, d3.min(filteredData, d => +d[xAttribute])); // Avoid zero for log scale
+    const xMin = Math.max(0.1, d3.min(filteredData, d => +d[xAttribute])); // Avoid zero for log scale
     const xMax = d3.max(filteredData, d => +d[xAttribute]);
-    const xScale = d3.scaleLog().domain([xMin, xMax]).range([0, width]);
+
+
+    // X-axis Scale
+    const xScale = d3.scaleLog().domain([xMin, xMax]).range([0, width+50]);
 
     // X-Axis animation during initial rendering
-    if (isInitialRender) {
+    if (previousXAttribute!=refPlanet) {
         // Append and animate x-axis line
         svg.append("line")
-            .attr("class", "x-axis-line")
+            .attr("class", "axis")
             .attr("x1", 0)
             .attr("x2", 0) // Start at 0
             .attr("y1", height)
             .attr("y2", height)
-            .style("stroke", "black")
+            .style("stroke", "white")
             .style("stroke-width", 1.5)
             .transition()
             .duration(500)
@@ -178,7 +202,7 @@ function drawChart() {
 
         // Append x-axis ticks and labels after animation
         svg.append("g")
-            .attr("class", "x-axis")
+            .attr("class", "axis")
             .attr("transform", `translate(0, ${height})`)
             .style("opacity", 0) // Initially hide ticks
             .transition()
@@ -186,69 +210,109 @@ function drawChart() {
             .duration(500)
             .style("opacity", 1)
             .call(d3.axisBottom(xScale));
+        previousXAttribute=refPlanet
     } else {
         // Directly render the x-axis without animation
         svg.append("g")
-            .attr("class", "x-axis")
+            .attr("class", "axis")
             .attr("transform", `translate(0, ${height})`)
             .call(d3.axisBottom(xScale));
     }
-    isInitialRender = false;
 
     const xAxisLabelText = refPlanet === "Earth" 
     ? "Distance from Earth (parsecs)" 
     : "Distance from Jupiter (parsecs)";
-    console.log(xAxisLabelText);
 
     // X-axis label
     svg.append("text")
-        .attr("class", "x-axis-label")
+        .attr("class", "axis-label") // Changed to axis-label for proper styling
         .attr("text-anchor", "middle")
-        .attr("x", width / 2)
+        .attr("x", width / 2+20)
         .attr("y", height + margin.bottom - 10)
-        .text(xAxisLabelText);
+        .text(xAxisLabelText)
+        .style("fill", "#ffffff") // Explicitly set the text color for visibility
+        .style("font-weight", "bold");
     
    
     // Define y-scale with dynamic domain
     const yMin = isLogScale ? Math.max(0.1, d3.min(filteredData, d => +d[yAttribute])) : d3.min(filteredData, d => +d[yAttribute]);
-    const yMax = d3.max(filteredData, d => +d[yAttribute]);
+    const yMax = d3.max(filteredData, d => +d[yAttribute])*1.05;
+
+    // Extract the values for yAttribute from filteredData and convert to numbers
+const yValues = filteredData.map(d => +d[yAttribute]);
+
+// Calculate min and max, ignoring any NaN values
+const validYValues = yValues.filter(val => !isNaN(val));
+const minY = Math.min(...validYValues);
+const maxY = Math.max(...validYValues);
+
+console.log("min and max values of", yAttribute, minY, maxY);
+
     const yScale = isLogScale
         ? d3.scaleLog().domain([yMin, yMax]).range([height, 0])
         : d3.scaleLinear().domain([yMin, yMax]).range([height, 0]);
 
     // Append a y-axis line
-    svg.append("line")
-    .attr("class", "y-axis-line")
-    .attr("x1", 0)
-    .attr("x2", 0)
-    .attr("y1", height)
-    .attr("y2", height) // Start at the bottom for animation
-    .style("stroke", "black")
-    .style("stroke-width", 1.5)
-    .transition() // Animate the line growth
-    .duration(500)
-    .ease(d3.easeCubicInOut)
-    .attr("y2", 0); // Grow to full height
+    if (yAttribute !== previousYAttribute) {
+        svg.append("line")
+        .attr("class", "axis")
+        .attr("x1", -0.5)
+        .attr("x2", -0.5)
+        .attr("y1", height)
+        .attr("y2", height) // Start at the bottom for animation
+        .style("stroke", "white")
+        .style("stroke-width", 1.5)
+        .transition() // Animate the line growth
+        .duration(500)
+        .ease(d3.easeCubicInOut)
+        .attr("y2", 0); // Grow to full height
 
-    // Add y-axis ticks and labels after the line animation
-    svg.append("g")
-    .attr("class", "y-axis")
-    .style("opacity", 0) // Initially hide ticks
-    .transition()
-    .delay(500) // Delay to match the line animation
-    .duration(500)
-    .style("opacity", 1) // Fade in ticks
-    .call(d3.axisLeft(yScale));
+        // Add y-axis ticks and labels after the line animation
+    const yAxis = d3.axisLeft(yScale)
+    .ticks(isLogScale ? 5 : 10) // Adjust number of ticks for linear/log scale
+    .tickFormat(d => isLogScale ? d3.format(".0f")(d) : d); // Format for log scale if needed
 
+
+        // Add y-axis ticks and labels after the line animation
+        svg.append("g")
+        .attr("class", "axis")
+        .style("opacity", 0) // Initially hide ticks
+        .attr("transform", `translate(0, 0)`)
+        .transition()
+        .delay(500) // Delay to match the line animation
+        .duration(500)
+        .style("opacity", 1) // Fade in ticks
+        .call(yAxis);
+        // .raise(); // Bring axis to front to ensure visibility
+
+        // Update the previous yAttribute to the current one
+        previousYAttribute = yAttribute;
+    
+    }
+    else{
+        // Directly render the y-axis without animation
+        const yAxis = d3.axisLeft(yScale)
+        .ticks(isLogScale ? 5 : 10)
+        .tickFormat(d => isLogScale ? d3.format(".0f")(d) : d);
+
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", `translate(0, 0)`)
+            .call(yAxis);
+            // .raise(); // Bring axis to front to ensure visibility
+
+    }
 
     // Y-axis label
     svg.append("text")
-        .attr("class", "y-axis-label")
+        .attr("class", "axis-label") // Changed to axis-label for proper styling
         .attr("text-anchor", "middle")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
-        .attr("y", -margin.left+20)
-        .text(d3.select("#y-axis option:checked").text());
+        .attr("y", -margin.left + 30)
+        .text(d3.select("#y-axis option:checked").text())
+        .style("fill", "#ffffff") // Explicitly set the text color for visibility
+        .style("font-weight", "bold");
 
     // Filter out points outside the axis range
     const filtered_Data = filteredData.filter(d => {
@@ -268,7 +332,7 @@ function drawChart() {
     const temperatureThresholds = {
         cooler: 350,
         similar: [250, 800],
-        hotter: 801
+        hotter: 800
     };
 
     // Map classification to colors
@@ -292,19 +356,37 @@ function drawChart() {
 
     // Adjust the color scale logic
     if (colorAttribute === "pl_eqt") {
-        // Adjust the tooltip logic to include temperature classification
+
+        // Append new circles if more data points are added
         svg.selectAll(".data-circle")
-            .data(filtered_Data)
-            .enter()
-            .append("circle")
-            .attr("class", "data-circle") 
-            .attr("cx", d => xScale(d[xAttribute]))
-            .attr("cy", d => yScale(d[yAttribute]))
-            .attr("r", 5)
-            .attr("fill", d => {
-                const tempClass = classifyTemperature(+d[colorAttribute]);
-                return tempClass ? colorMapping[tempClass] : "#ccc"; // Default gray for missing values
-        })
+        .data(filtered_Data)
+        .join(
+            enter => enter.append("circle")
+                .attr("class", "data-circle")
+                .style("opacity", 0)
+                .attr("cx", d => xScale(d[xAttribute]))
+                .attr("cy", d => yScale(d[yAttribute]))
+                .attr("r", 5)
+                .attr("fill", d => {
+                    const tempClass = classifyTemperature(+d[colorAttribute]);
+                    return tempClass ? colorMapping[tempClass] : "#ccc"; // Default gray for missing values
+                })
+                .transition()
+                .delay(800)
+                .duration(300)
+                .style("opacity", 1),
+            update => update
+                .transition()
+                .delay(800)
+                .duration(300)
+                .attr("cx", d => xScale(d[xAttribute]))
+                .attr("cy", d => yScale(d[yAttribute]))
+                .attr("fill", d => {
+                    const tempClass = classifyTemperature(+d[colorAttribute]);
+                    return tempClass ? colorMapping[tempClass] : "#ccc"; // Default gray for missing values
+                }),
+            exit => exit.remove()
+        )    
         .style("cursor", "pointer")
         .on("mouseover", function (event, d) {
             const tempClass = classifyTemperature(+d[colorAttribute]); // Get the classification
@@ -318,16 +400,14 @@ function drawChart() {
                     <strong>Planet:</strong> ${d.pl_name || "N/A"}<br>
                     <strong>Temperature:</strong> ${(+d[colorAttribute]).toFixed(2) || "N/A"} K<br>
                     <strong>Classification:</strong> ${tempClass ? tempClass.charAt(0).toUpperCase() + tempClass.slice(1) : "N/A"}<br>
-                    <strong>Dist from Earth:</strong> ${(+d[xAttribute]).toFixed(2) || "N/A"} parsecs<br>
-                    <strong>${yAttribute}:</strong> ${(+d[yAttribute]).toFixed(2) || "N/A"}
+                    <strong>Dist from ${refPlanet}:</strong> ${(+d[xAttribute]).toFixed(2) || "N/A"} parsecs<br>
+                    <strong>${getYAttributeLabel(yAttribute)}:</strong> ${(+d[yAttribute]).toFixed(2) || "N/A"}
                 `);
             // Highlight points with the same color
-        // Hover logic
             svg.selectAll(".data-circle")
             .transition()
             .duration(100)
             .style("opacity", function (data) {
-                // Ensure the data point exists and the colorAttribute is valid
                 if (data && data[colorAttribute] !== undefined && data[colorAttribute] !== null) {
                     const hoverTempClass = classifyTemperature(+data[colorAttribute]); // Safely compute temp class
                     return hoverTempClass === tempClass ? 1 : 0.1; // Highlight matching, dim others
@@ -358,14 +438,13 @@ function drawChart() {
                 .attr("r", 5)
                 .attr("stroke", "none");
         });
-        
 
     // Clear the previous legend
     d3.selectAll(".legend").remove();
 
     const legend = svg.append("g")
-    .attr("class", "legend")
-    .attr("transform", `translate(${width + 20}, 50)`); // Adjust position
+            .attr("class", "legend")
+            .attr("transform", `translate(${width + 20}, 0)`);
     
     Object.keys(colorMapping).forEach((key, i) => {
         legend.append("circle")
@@ -379,6 +458,8 @@ function drawChart() {
             .attr("y", i * 20+0.5)
             .text(key.charAt(0).toUpperCase() + key.slice(1)) // Capitalize category
             .style("font-size", "12px")
+            .style("fill", "#ffffff")
+            .style("font-weight", "bold")
             .attr("alignment-baseline", "middle");
     });
     
@@ -458,10 +539,10 @@ function drawChart() {
     const legendWidth = 20;
 
     const legendSvg = svg.append("g")
-        .attr("transform", `translate(${width + 30},${(height - legendHeight) / 2})`);
+        .attr("transform", `translate(${width + 80},${(height - legendHeight) / 2})`);
 
     const legendScale = d3.scaleLinear()
-        .domain(d3.extent(sampledData, d => +d[colorAttribute]))
+        .domain(d3.extent(filteredData, d => +d[colorAttribute]))
         .range([legendHeight, 0]);
 
     const legendAxis = d3.axisRight(legendScale)
@@ -505,7 +586,7 @@ function drawChart() {
     }
     else{
         //  Add color legend
-        const uniqueCategories = [...new Set(sampledData.map(d => d[colorAttribute]))];
+        const uniqueCategories = [...new Set(filteredData.map(d => d[colorAttribute]))];
         d3.selectAll(".legend").remove();
         const legend = svg.append("g")
             .attr("class", "legend")
@@ -521,11 +602,14 @@ function drawChart() {
 
             legend.append("text")
                 .attr("x", 15)
-                .attr("y", i * 20 + 5)
+                .attr("y", i * 20 + 0.5)
                 .attr("class", "legend-text")
                 .text(category)
                 .style("font-size", "12px")
+                .style("fill", "#ffffff")
+                .style("font-weight", "bold")
                 .attr("alignment-baseline", "middle");
+            
         });
     }
 }
@@ -537,16 +621,16 @@ function generateTooltipContent(d, colorAttribute) {
         additionalInfo = `<strong>Discovery Method:</strong> ${d.discoverymethod || "N/A"}<br>`;
     } else if (colorAttribute === "disc_year") {
         additionalInfo = `<strong>Discovery Year:</strong> ${d.disc_year || "N/A"}<br>`;
-    } else if (colorAttribute === "host_star_type") {
-        additionalInfo = `<strong>Host Star Type:</strong> ${d.host_star_type || "N/A"}<br>`;
+    } else if (colorAttribute === "st_spectype") {
+        additionalInfo = `<strong>Host Star Type:</strong> ${d.st_spectype || "N/A"}<br>`;
     } else {
         additionalInfo = `<strong>${colorAttribute}:</strong> ${d[colorAttribute] || "N/A"}<br>`;
     }
-
     return `
-        <strong>Planet:</strong> ${d.pl_name || "N/A"}<br>            
-       <strong>Temperature:</strong> ${d.pl_eqt !== undefined && d.pl_eqt !== null ? (+d.pl_eqt).toFixed(2) + " K" : "N/A"}<br>
- ${additionalInfo}
+    <strong>Planet:</strong> ${d.pl_name || "N/A"}<br>
+    <strong>Dist from ${refPlanet}:</strong> ${(+d[xAttribute]).toFixed(2) || "N/A"} parsecs<br>
+    <strong>${getYAttributeLabel(yAttribute)}:</strong> ${(+d[yAttribute]).toFixed(2) || "N/A"}<br>
+    ${additionalInfo}
     `;
 }
 

@@ -1,35 +1,148 @@
 .text-center {
     text-align: center;
 }
-
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    color: #ffffff;
     margin: 0;
     padding: 20px;
+    background-image: url('backgroundimg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
 }
 
-h3 {
+h3.text-center {
     text-align: center;
+    font-weight: bold;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    background: transparent;
+    color: #ffffff;
 }
+
+hr {
+    border: none;
+    height: 2px;
+    background-color: #ffffff;
+    margin: 15px 0;
+    background: transparent;
+}
+
 .dropdown-container {
     display: flex;
-    gap: 10px;
+    justify-content: center;
     align-items: center;
+    gap: 15px;
     margin-bottom: 20px;
+    background: transparent;
 }
-.chart {
-    width: 500%;
-    height: 300px;
+
+label {
+    font-weight: bold;
+    font-size: 1em;
+    background: transparent;
+    color: #ffffff;
 }
+
+select {
+    padding: 5px;
+    font-size: 1em;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #ffffff;
+    cursor: pointer;
+    background: transparent;
+}
+
+#chart {
+    width: 100%;
+    max-width: 1000px;
+    height: 500px;
+    margin: 0 auto;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #ffffff;
+    shape-rendering: crispEdges;
+    /* background: transparent; */
+}
+
+.axis text {
+    font-size: 12px;
+    fill: #ffffff;
+    font-weight: bold;
+    background: transparent;
+}
+
+.axis-label {
+    font-size: 16px;
+    fill: #ffffff;
+    font-weight: bold;
+    text-anchor: middle;
+    background: transparent;
+}
+
+/* .tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    padding: 8px;
+    font-size: 0.9em;
+    background: #ffffff;
+    color: #333;
+    border-radius: 8px;
+    pointer-events: none;
+    box-shadow: 0px 2px 6px rgba(255, 255, 255, 0.3);
+} */
 .tooltip {
     position: absolute;
-    background-color: white;
-    border: 1px solid #333;
-    border-radius: 10px;
-    padding: 5px;
-    font-size: 12px;
+    text-align: left; /* Align text to the left */
+    width: auto;
+    padding: 10px; /* Add padding for a cleaner look */
+    font-size: 0.9em;
+    line-height: 1.5em; /* Set line height for better spacing */
+    background: #ffffff;
+    color: #333;
+    border-radius: 8px;
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    box-shadow: 0px 2px 6px rgba(255, 255, 255, 0.3);
+    /* background: transparent; */
+}
+
+.dropdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    background: transparent;
+}
+
+label {
+    font-weight: bold;
+    font-size: 1em;
+    background: transparent;
+    color: #ffffff;
+}
+
+select {
+    padding: 5px;
+    font-size: 1em;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: #333333; /* Dark background for the dropdown */
+    color: #ffffff; /* White text for visibility */
+    cursor: pointer;
+}
+
+select option {
+    background-color: #333333; /* Dark background for dropdown options */
+    color: #ffffff; /* White text for dropdown options */
 }
