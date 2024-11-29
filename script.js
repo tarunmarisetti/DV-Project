@@ -2,7 +2,7 @@
 let data;
 //color scale
 const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-d3.csv("Updated_Exoplanet_Dataset_with_Adjusted_pl_bmassj.csv").then(data => {
+d3.csv("Data_main.csv").then(data => {
 
     const reference = d3.select("#reference").property("value");
     const xAttribute = "sy_dist"; // Hardcode the X-axis attribute
