@@ -154,7 +154,6 @@ function drawChart() {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
                 
-    const isContinuous = colorAttribute === "pl_eqt" || colorAttribute === "disc_year";
     
     // Filter out non-positive values for log scale attributes
     const isLogScale = ["pl_rade", "pl_bmasse", "pl_radj", "pl_bmassj"].includes(yAttribute);
@@ -243,7 +242,7 @@ function drawChart() {
         .attr("y2", 0); // Grow to full height
 
         let yAxis;
-        if(isContinuous){
+        if(isLogScale){
             // Define tick values dynamically or explicitly
         const logTicks = yScale.ticks(); // Use yScale.ticks() to generate dynamic tick values
         yAxis = d3.axisLeft(yScale)
@@ -253,7 +252,7 @@ function drawChart() {
         else{
             yAxis = d3.axisLeft(yScale)
             .ticks(10) // Adjust number of ticks for linear/log scale
-            .tickFormat(d); // Format for log scale if needed
+            .tickFormat(d => d);
 
         }
 
@@ -308,15 +307,16 @@ function drawChart() {
             yValue <= yScale.domain()[1]
         );
     });
-    // Data Points
+        // Data Points
     svg.selectAll(".data-circle")
         .data(filtered_Data)
         .enter()
-        .append("circle")
+        .append("circle")        
         .attr("class", "data-circle")
         .attr("cx", d => xScale(d[xAttribute]))
         .attr("cy", d => yScale(d[yAttribute]))
         .attr("r", 5);
+
 
     // Initially set colors and legend
     updateCircleColors(svg,width,height);
